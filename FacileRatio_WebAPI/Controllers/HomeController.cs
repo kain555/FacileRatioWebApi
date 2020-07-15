@@ -10,7 +10,8 @@ namespace FacileRatio_WebAPI.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Strona domowa";
+
 
             return View();
         }
