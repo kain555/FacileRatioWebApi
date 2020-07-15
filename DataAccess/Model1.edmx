@@ -1,0 +1,718 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FacileRatioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Billing_Entries">
+          <Key>
+            <PropertyRef Name="billing_entries_id" />
+          </Key>
+          <Property Name="billing_entries_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="item_id" Type="int" />
+          <Property Name="value_netto" Type="money" />
+          <Property Name="value_brutto" Type="money" />
+          <Property Name="tax" Type="int" />
+        </EntityType>
+        <EntityType Name="Budget_lines">
+          <Key>
+            <PropertyRef Name="bl_id" />
+          </Key>
+          <Property Name="bl_id" Type="int" Nullable="false" />
+          <Property Name="budget_id" Type="int" />
+          <Property Name="line_id" Type="int" />
+          <Property Name="amount" Type="money" />
+        </EntityType>
+        <EntityType Name="Budgets">
+          <Key>
+            <PropertyRef Name="budget_id" />
+          </Key>
+          <Property Name="budget_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="bl_id" Type="int" />
+          <Property Name="period" Type="nchar" MaxLength="10" />
+          <Property Name="owner_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="employee_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="surname" Type="nvarchar" MaxLength="50" />
+          <Property Name="position_id" Type="int" />
+          <Property Name="address" Type="nvarchar" MaxLength="50" />
+          <Property Name="postal_code" Type="nvarchar" MaxLength="6" />
+          <Property Name="dateOfBirth" Type="date" />
+        </EntityType>
+        <EntityType Name="Invoice_Budget">
+          <Key>
+            <PropertyRef Name="ib_id" />
+          </Key>
+          <Property Name="ib_id" Type="int" Nullable="false" />
+          <Property Name="invoice_id" Type="int" />
+          <Property Name="bl_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Invoices">
+          <Key>
+            <PropertyRef Name="invoice_id" />
+          </Key>
+          <Property Name="invoice_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="invoice_date" Type="date" />
+          <Property Name="invoice_number" Type="nvarchar" MaxLength="15" />
+          <Property Name="vendor_id" Type="int" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="finish_date" Type="date" />
+          <Property Name="product_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="count" Type="int" />
+          <Property Name="billing_entries_id" Type="int" />
+          <Property Name="tax" Type="int" />
+          <Property Name="description" Type="text" />
+          <Property Name="introducted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="description" Type="text" />
+        </EntityType>
+        <EntityType Name="Lines">
+          <Key>
+            <PropertyRef Name="line_id" />
+          </Key>
+          <Property Name="line_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="description" Type="text" />
+        </EntityType>
+        <EntityType Name="Positions">
+          <Key>
+            <PropertyRef Name="position_id" />
+          </Key>
+          <Property Name="position_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Vendors">
+          <Key>
+            <PropertyRef Name="vendor_id" />
+          </Key>
+          <Property Name="vendor_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="nip" Type="nchar" MaxLength="10" />
+          <Property Name="address" Type="nvarchar" MaxLength="50" />
+          <Property Name="postal_code" Type="nchar" MaxLength="6" />
+          <Property Name="city" Type="nvarchar" MaxLength="50" />
+          <Property Name="description" Type="text" />
+        </EntityType>
+        <Association Name="FK_Billing_Entries_Items">
+          <End Role="Items" Type="Self.Items" Multiplicity="0..1" />
+          <End Role="Billing_Entries" Type="Self.Billing_Entries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="Billing_Entries">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budget_lines_Budgets">
+          <End Role="Budgets" Type="Self.Budgets" Multiplicity="0..1" />
+          <End Role="Budget_lines" Type="Self.Budget_lines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets">
+              <PropertyRef Name="budget_id" />
+            </Principal>
+            <Dependent Role="Budget_lines">
+              <PropertyRef Name="budget_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budget_lines_Lines">
+          <End Role="Lines" Type="Self.Lines" Multiplicity="0..1" />
+          <End Role="Budget_lines" Type="Self.Budget_lines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lines">
+              <PropertyRef Name="line_id" />
+            </Principal>
+            <Dependent Role="Budget_lines">
+              <PropertyRef Name="line_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Budgets" Type="Self.Budgets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Budgets">
+              <PropertyRef Name="owner_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_positions">
+          <End Role="Positions" Type="Self.Positions" Multiplicity="0..1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Positions">
+              <PropertyRef Name="position_id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="position_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Budget_Budget_lines">
+          <End Role="Budget_lines" Type="Self.Budget_lines" Multiplicity="0..1" />
+          <End Role="Invoice_Budget" Type="Self.Invoice_Budget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budget_lines">
+              <PropertyRef Name="bl_id" />
+            </Principal>
+            <Dependent Role="Invoice_Budget">
+              <PropertyRef Name="bl_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Budget_Invoices">
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="0..1" />
+          <End Role="Invoice_Budget" Type="Self.Invoice_Budget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="invoice_id" />
+            </Principal>
+            <Dependent Role="Invoice_Budget">
+              <PropertyRef Name="invoice_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoices_Billing_Entries">
+          <End Role="Billing_Entries" Type="Self.Billing_Entries" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Billing_Entries">
+              <PropertyRef Name="billing_entries_id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="billing_entries_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoices_Vendors">
+          <End Role="Vendors" Type="Self.Vendors" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendors">
+              <PropertyRef Name="vendor_id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FacileRatioModelStoreContainer">
+          <EntitySet Name="Billing_Entries" EntityType="Self.Billing_Entries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Budget_lines" EntityType="Self.Budget_lines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Budgets" EntityType="Self.Budgets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoice_Budget" EntityType="Self.Invoice_Budget" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoices" EntityType="Self.Invoices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lines" EntityType="Self.Lines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Positions" EntityType="Self.Positions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Billing_Entries_Items" Association="Self.FK_Billing_Entries_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="Billing_Entries" EntitySet="Billing_Entries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budget_lines_Budgets" Association="Self.FK_Budget_lines_Budgets">
+            <End Role="Budgets" EntitySet="Budgets" />
+            <End Role="Budget_lines" EntitySet="Budget_lines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budget_lines_Lines" Association="Self.FK_Budget_lines_Lines">
+            <End Role="Lines" EntitySet="Lines" />
+            <End Role="Budget_lines" EntitySet="Budget_lines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_Employees" Association="Self.FK_Budgets_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Budgets" EntitySet="Budgets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_positions" Association="Self.FK_Employees_positions">
+            <End Role="Positions" EntitySet="Positions" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Budget_Budget_lines" Association="Self.FK_Invoice_Budget_Budget_lines">
+            <End Role="Budget_lines" EntitySet="Budget_lines" />
+            <End Role="Invoice_Budget" EntitySet="Invoice_Budget" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Budget_Invoices" Association="Self.FK_Invoice_Budget_Invoices">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="Invoice_Budget" EntitySet="Invoice_Budget" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoices_Billing_Entries" Association="Self.FK_Invoices_Billing_Entries">
+            <End Role="Billing_Entries" EntitySet="Billing_Entries" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoices_Vendors" Association="Self.FK_Invoices_Vendors">
+            <End Role="Vendors" EntitySet="Vendors" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FacileRatioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Billing_Entries">
+          <Key>
+            <PropertyRef Name="billing_entries_id" />
+          </Key>
+          <Property Name="billing_entries_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="item_id" Type="Int32" />
+          <Property Name="value_netto" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="value_brutto" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="tax" Type="Int32" />
+          <NavigationProperty Name="Items" Relationship="Self.FK_Billing_Entries_Items" FromRole="Billing_Entries" ToRole="Items" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK_Invoices_Billing_Entries" FromRole="Billing_Entries" ToRole="Invoices" />
+        </EntityType>
+        <EntityType Name="Budget_lines">
+          <Key>
+            <PropertyRef Name="bl_id" />
+          </Key>
+          <Property Name="bl_id" Type="Int32" Nullable="false" />
+          <Property Name="budget_id" Type="Int32" />
+          <Property Name="line_id" Type="Int32" />
+          <Property Name="amount" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Budgets" Relationship="Self.FK_Budget_lines_Budgets" FromRole="Budget_lines" ToRole="Budgets" />
+          <NavigationProperty Name="Lines" Relationship="Self.FK_Budget_lines_Lines" FromRole="Budget_lines" ToRole="Lines" />
+          <NavigationProperty Name="Invoice_Budget" Relationship="Self.FK_Invoice_Budget_Budget_lines" FromRole="Budget_lines" ToRole="Invoice_Budget" />
+        </EntityType>
+        <EntityType Name="Budgets">
+          <Key>
+            <PropertyRef Name="budget_id" />
+          </Key>
+          <Property Name="budget_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bl_id" Type="Int32" />
+          <Property Name="period" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="owner_id" Type="Int32" />
+          <NavigationProperty Name="Budget_lines" Relationship="Self.FK_Budget_lines_Budgets" FromRole="Budgets" ToRole="Budget_lines" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Budgets_Employees" FromRole="Budgets" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="employee_id" />
+          </Key>
+          <Property Name="employee_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="position_id" Type="Int32" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="postal_code" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="dateOfBirth" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Budgets" Relationship="Self.FK_Budgets_Employees" FromRole="Employees" ToRole="Budgets" />
+          <NavigationProperty Name="Positions" Relationship="Self.FK_Employees_positions" FromRole="Employees" ToRole="Positions" />
+        </EntityType>
+        <EntityType Name="Invoice_Budget">
+          <Key>
+            <PropertyRef Name="ib_id" />
+          </Key>
+          <Property Name="ib_id" Type="Int32" Nullable="false" />
+          <Property Name="invoice_id" Type="Int32" />
+          <Property Name="bl_id" Type="Int32" />
+          <NavigationProperty Name="Budget_lines" Relationship="Self.FK_Invoice_Budget_Budget_lines" FromRole="Invoice_Budget" ToRole="Budget_lines" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK_Invoice_Budget_Invoices" FromRole="Invoice_Budget" ToRole="Invoices" />
+        </EntityType>
+        <EntityType Name="Invoices">
+          <Key>
+            <PropertyRef Name="invoice_id" />
+          </Key>
+          <Property Name="invoice_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="invoice_date" Type="DateTime" Precision="0" />
+          <Property Name="invoice_number" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="vendor_id" Type="Int32" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="finish_date" Type="DateTime" Precision="0" />
+          <Property Name="product_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="count" Type="Int32" />
+          <Property Name="billing_entries_id" Type="Int32" />
+          <Property Name="tax" Type="Int32" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="introducted" Type="Boolean" />
+          <NavigationProperty Name="Billing_Entries" Relationship="Self.FK_Invoices_Billing_Entries" FromRole="Invoices" ToRole="Billing_Entries" />
+          <NavigationProperty Name="Invoice_Budget" Relationship="Self.FK_Invoice_Budget_Invoices" FromRole="Invoices" ToRole="Invoice_Budget" />
+          <NavigationProperty Name="Vendors" Relationship="Self.FK_Invoices_Vendors" FromRole="Invoices" ToRole="Vendors" />
+        </EntityType>
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Billing_Entries" Relationship="Self.FK_Billing_Entries_Items" FromRole="Items" ToRole="Billing_Entries" />
+        </EntityType>
+        <EntityType Name="Lines">
+          <Key>
+            <PropertyRef Name="line_id" />
+          </Key>
+          <Property Name="line_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Budget_lines" Relationship="Self.FK_Budget_lines_Lines" FromRole="Lines" ToRole="Budget_lines" />
+        </EntityType>
+        <EntityType Name="Positions">
+          <Key>
+            <PropertyRef Name="position_id" />
+          </Key>
+          <Property Name="position_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_positions" FromRole="Positions" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Vendors">
+          <Key>
+            <PropertyRef Name="vendor_id" />
+          </Key>
+          <Property Name="vendor_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="nip" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="postal_code" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK_Invoices_Vendors" FromRole="Vendors" ToRole="Invoices" />
+        </EntityType>
+        <Association Name="FK_Billing_Entries_Items">
+          <End Role="Items" Type="Self.Items" Multiplicity="0..1" />
+          <End Role="Billing_Entries" Type="Self.Billing_Entries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="Billing_Entries">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoices_Billing_Entries">
+          <End Role="Billing_Entries" Type="Self.Billing_Entries" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Billing_Entries">
+              <PropertyRef Name="billing_entries_id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="billing_entries_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budget_lines_Budgets">
+          <End Role="Budgets" Type="Self.Budgets" Multiplicity="0..1" />
+          <End Role="Budget_lines" Type="Self.Budget_lines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budgets">
+              <PropertyRef Name="budget_id" />
+            </Principal>
+            <Dependent Role="Budget_lines">
+              <PropertyRef Name="budget_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budget_lines_Lines">
+          <End Role="Lines" Type="Self.Lines" Multiplicity="0..1" />
+          <End Role="Budget_lines" Type="Self.Budget_lines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lines">
+              <PropertyRef Name="line_id" />
+            </Principal>
+            <Dependent Role="Budget_lines">
+              <PropertyRef Name="line_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Budget_Budget_lines">
+          <End Role="Budget_lines" Type="Self.Budget_lines" Multiplicity="0..1" />
+          <End Role="Invoice_Budget" Type="Self.Invoice_Budget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Budget_lines">
+              <PropertyRef Name="bl_id" />
+            </Principal>
+            <Dependent Role="Invoice_Budget">
+              <PropertyRef Name="bl_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Budgets_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Budgets" Type="Self.Budgets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="employee_id" />
+            </Principal>
+            <Dependent Role="Budgets">
+              <PropertyRef Name="owner_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_positions">
+          <End Role="Positions" Type="Self.Positions" Multiplicity="0..1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Positions">
+              <PropertyRef Name="position_id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="position_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Budget_Invoices">
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="0..1" />
+          <End Role="Invoice_Budget" Type="Self.Invoice_Budget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="invoice_id" />
+            </Principal>
+            <Dependent Role="Invoice_Budget">
+              <PropertyRef Name="invoice_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoices_Vendors">
+          <End Role="Vendors" Type="Self.Vendors" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendors">
+              <PropertyRef Name="vendor_id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FacileRatioEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Billing_Entries" EntityType="Self.Billing_Entries" />
+          <EntitySet Name="Budget_lines" EntityType="Self.Budget_lines" />
+          <EntitySet Name="Budgets" EntityType="Self.Budgets" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" />
+          <EntitySet Name="Invoice_Budget" EntityType="Self.Invoice_Budget" />
+          <EntitySet Name="Invoices" EntityType="Self.Invoices" />
+          <EntitySet Name="Items" EntityType="Self.Items" />
+          <EntitySet Name="Lines" EntityType="Self.Lines" />
+          <EntitySet Name="Positions" EntityType="Self.Positions" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendors" />
+          <AssociationSet Name="FK_Billing_Entries_Items" Association="Self.FK_Billing_Entries_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="Billing_Entries" EntitySet="Billing_Entries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoices_Billing_Entries" Association="Self.FK_Invoices_Billing_Entries">
+            <End Role="Billing_Entries" EntitySet="Billing_Entries" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budget_lines_Budgets" Association="Self.FK_Budget_lines_Budgets">
+            <End Role="Budgets" EntitySet="Budgets" />
+            <End Role="Budget_lines" EntitySet="Budget_lines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budget_lines_Lines" Association="Self.FK_Budget_lines_Lines">
+            <End Role="Lines" EntitySet="Lines" />
+            <End Role="Budget_lines" EntitySet="Budget_lines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Budget_Budget_lines" Association="Self.FK_Invoice_Budget_Budget_lines">
+            <End Role="Budget_lines" EntitySet="Budget_lines" />
+            <End Role="Invoice_Budget" EntitySet="Invoice_Budget" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Budgets_Employees" Association="Self.FK_Budgets_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Budgets" EntitySet="Budgets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_positions" Association="Self.FK_Employees_positions">
+            <End Role="Positions" EntitySet="Positions" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Budget_Invoices" Association="Self.FK_Invoice_Budget_Invoices">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="Invoice_Budget" EntitySet="Invoice_Budget" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoices_Vendors" Association="Self.FK_Invoices_Vendors">
+            <End Role="Vendors" EntitySet="Vendors" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FacileRatioModelStoreContainer" CdmEntityContainer="FacileRatioEntities">
+          <EntitySetMapping Name="Billing_Entries">
+            <EntityTypeMapping TypeName="FacileRatioModel.Billing_Entries">
+              <MappingFragment StoreEntitySet="Billing_Entries">
+                <ScalarProperty Name="billing_entries_id" ColumnName="billing_entries_id" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="value_netto" ColumnName="value_netto" />
+                <ScalarProperty Name="value_brutto" ColumnName="value_brutto" />
+                <ScalarProperty Name="tax" ColumnName="tax" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Budget_lines">
+            <EntityTypeMapping TypeName="FacileRatioModel.Budget_lines">
+              <MappingFragment StoreEntitySet="Budget_lines">
+                <ScalarProperty Name="bl_id" ColumnName="bl_id" />
+                <ScalarProperty Name="budget_id" ColumnName="budget_id" />
+                <ScalarProperty Name="line_id" ColumnName="line_id" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Budgets">
+            <EntityTypeMapping TypeName="FacileRatioModel.Budgets">
+              <MappingFragment StoreEntitySet="Budgets">
+                <ScalarProperty Name="budget_id" ColumnName="budget_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="bl_id" ColumnName="bl_id" />
+                <ScalarProperty Name="period" ColumnName="period" />
+                <ScalarProperty Name="owner_id" ColumnName="owner_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="FacileRatioModel.Employees">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="position_id" ColumnName="position_id" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="postal_code" ColumnName="postal_code" />
+                <ScalarProperty Name="dateOfBirth" ColumnName="dateOfBirth" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoice_Budget">
+            <EntityTypeMapping TypeName="FacileRatioModel.Invoice_Budget">
+              <MappingFragment StoreEntitySet="Invoice_Budget">
+                <ScalarProperty Name="ib_id" ColumnName="ib_id" />
+                <ScalarProperty Name="invoice_id" ColumnName="invoice_id" />
+                <ScalarProperty Name="bl_id" ColumnName="bl_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoices">
+            <EntityTypeMapping TypeName="FacileRatioModel.Invoices">
+              <MappingFragment StoreEntitySet="Invoices">
+                <ScalarProperty Name="invoice_id" ColumnName="invoice_id" />
+                <ScalarProperty Name="invoice_date" ColumnName="invoice_date" />
+                <ScalarProperty Name="invoice_number" ColumnName="invoice_number" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="finish_date" ColumnName="finish_date" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="billing_entries_id" ColumnName="billing_entries_id" />
+                <ScalarProperty Name="tax" ColumnName="tax" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="introducted" ColumnName="introducted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="FacileRatioModel.Items">
+              <MappingFragment StoreEntitySet="Items">
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lines">
+            <EntityTypeMapping TypeName="FacileRatioModel.Lines">
+              <MappingFragment StoreEntitySet="Lines">
+                <ScalarProperty Name="line_id" ColumnName="line_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Positions">
+            <EntityTypeMapping TypeName="FacileRatioModel.Positions">
+              <MappingFragment StoreEntitySet="Positions">
+                <ScalarProperty Name="position_id" ColumnName="position_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FacileRatioModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendors">
+            <EntityTypeMapping TypeName="FacileRatioModel.Vendors">
+              <MappingFragment StoreEntitySet="Vendors">
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="nip" ColumnName="nip" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="postal_code" ColumnName="postal_code" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

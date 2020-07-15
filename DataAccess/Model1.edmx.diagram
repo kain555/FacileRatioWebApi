@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b7276f89a2ef4ea793e9fda4a32c42b4" Name="Diagram1">
+        <EntityTypeShape EntityType="FacileRatioModel.Billing_Entries" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.Budget_lines" Width="1.5" PointX="5.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.Budgets" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.Employees" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.Invoice_Budget" Width="1.5" PointX="7.5" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.Invoices" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.Items" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.Lines" Width="1.5" PointX="3" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.Positions" Width="1.5" PointX="1.5" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FacileRatioModel.Vendors" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <AssociationConnector Association="FacileRatioModel.FK_Billing_Entries_Items" ManuallyRouted="false" />
+        <AssociationConnector Association="FacileRatioModel.FK_Invoices_Billing_Entries" ManuallyRouted="false" />
+        <AssociationConnector Association="FacileRatioModel.FK_Budget_lines_Budgets" ManuallyRouted="false" />
+        <AssociationConnector Association="FacileRatioModel.FK_Budget_lines_Lines" ManuallyRouted="false" />
+        <AssociationConnector Association="FacileRatioModel.FK_Invoice_Budget_Budget_lines" ManuallyRouted="false" />
+        <AssociationConnector Association="FacileRatioModel.FK_Budgets_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="FacileRatioModel.FK_Employees_positions" ManuallyRouted="false" />
+        <AssociationConnector Association="FacileRatioModel.FK_Invoice_Budget_Invoices" ManuallyRouted="false" />
+        <AssociationConnector Association="FacileRatioModel.FK_Invoices_Vendors" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

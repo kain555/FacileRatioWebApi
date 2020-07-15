@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacileRatio_WebAPI", "FacileRatio_WebAPI\FacileRatio_WebAPI.csproj", "{3264BF3A-9275-45AD-BD62-EFD28B1E9B9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{F6C60B3D-7E72-49FE-8B37-FA141B1418DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3264BF3A-9275-45AD-BD62-EFD28B1E9B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3264BF3A-9275-45AD-BD62-EFD28B1E9B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3264BF3A-9275-45AD-BD62-EFD28B1E9B9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6C60B3D-7E72-49FE-8B37-FA141B1418DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6C60B3D-7E72-49FE-8B37-FA141B1418DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6C60B3D-7E72-49FE-8B37-FA141B1418DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6C60B3D-7E72-49FE-8B37-FA141B1418DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
